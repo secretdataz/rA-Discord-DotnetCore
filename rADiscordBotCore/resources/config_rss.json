@@ -1,0 +1,11 @@
+﻿{
+    "Enabled": true,
+    "AutoReset": true,
+    "RefreshInterval": 600000,
+    "SupportFeeds": [
+      "https://rathena.org/board/rss/3-support-topics-feed.xml/"
+    ],
+    "ServerFeeds": [
+      "https://rathena.org/board/discover/11.xml/?member=241&key=1b4347233fcb9ef8a786d0facd264997"
+    ]
+}
