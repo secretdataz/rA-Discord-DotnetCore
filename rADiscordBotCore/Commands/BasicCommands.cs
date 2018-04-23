@@ -35,6 +35,7 @@ namespace rADiscordBotCore.Commands
 
         [Command("purge"), Summary("This command will remove some Chat Log. ```Usage: !purge <amount> <@mention>```")]
         [Alias("remove", "clean", "delete")]
+        [RequireUserPermission(GuildPermission.ManageMessages)]
         public async Task Purge([Summary("Amount of messages to traverse back")] int amount, [Summary("The optional user to purge message")] IUser user = null)
         {
             if (amount > 0)
