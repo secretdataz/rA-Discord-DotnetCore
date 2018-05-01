@@ -100,7 +100,7 @@ namespace rADiscordBotCore.Commands
                     }
                 }
 
-                await ReplyAsync("```Usage: !faq <key>\nAvailable keys are:\n" + keys);
+                await ReplyAsync("```Usage: !faq <key>\nAvailable keys are:\n" + keys + "```");
                 return;
             }
             if (faqs.ContainsKey(key))
@@ -108,7 +108,7 @@ namespace rADiscordBotCore.Commands
                 await ReplyAsync(faqs[key]);
             } else
             {
-                await ReplyAsync("Invalid FAQ key.\nnAvailable keys are:\n" + keys);
+                await ReplyAsync("Invalid FAQ key.\nnAvailable keys are:\n" + keys + "```");
             }
         }
     }
