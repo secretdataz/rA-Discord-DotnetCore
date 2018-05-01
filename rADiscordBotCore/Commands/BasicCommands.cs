@@ -2,6 +2,8 @@
 using Discord.Commands;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace rADiscordBotCore.Commands
 {
@@ -65,6 +67,49 @@ namespace rADiscordBotCore.Commands
                                         //+ "Status: " + user.Status + System.Environment.NewLine
                                         + "```";
             await ReplyAsync(msg);
+        }
+
+        Dictionary<string, string> faqs = new Dictionary<string, string>
+        {
+            { "install", "*Installation guide*:\nhttps://github.com/rathena/rathena/wiki/installations" },
+            { "contrib", "*How to contribute* report a bug or open a pull request:\nhttps://github.com/rathena/rathena/blob/master/.github/CONTRIBUTING.md" },
+            { "forum", "*rAthena Forums*:\nhttps://rathena.org" },
+            { "git", "*rAthena Git repository*:\nhttps://github.com/rathena/rathena" },
+            { "flux", "*FluxCP Git repository*:\nhttps://github.com/rathena/fluxcp" },
+            { "rasql", "*rASql Git repository*:\nhttps://github.com/rathena/rasql" },
+            { "fluxdiscord", "*FluxCP Discord server*:\nhttps://discord.gg/JT3mD3t" },
+            { "kroclient", "*kRO full client*:\nhttps://rathena.org/board/topic/106413-kro-full-client-2018-03-27-includes-bgm-rsu/" },
+            { "grfeditor", "*Tokei's GRF Editor*:\nhttps://rathena.org/board/topic/77080-grf-grf-editor/" },
+            { "thorpatcher", "*Aeomin's Thor patcher*:\nhttps://rathena.org/board/topic/59946-thor-patcher/" },
+            { "nemo", "*NEMO client editor, 4144's fork*:\nhttps://gitlab.com/4144/Nemo" },
+            { "donate", "*Donate to rAthena*, help us pay for hosting and stuffs:\nhttps://rathena.org/board/clients/donations/" },
+            { "3ps", "*Third-party Services* paid service listing:\nhttps://rathena.org/thirdpartyservices/" },
+            { "docsfolder", "*rAthena's docs folder* aka the rAthena Bible:\nhttps://github.com/rathena/rathena/tree/master/doc" }
+        };
+        string keys = "";
+        [Command("faq"), Summary("This command will display the FAQ. ```Usage: !faq {<key>}```")]
+        public async Task FAQ([Summary("The FAQ to be displayed")]string key = null)
+        {
+            if(key == null)
+            {
+                if(string.IsNullOrEmpty(keys))
+                {
+                    foreach (KeyValuePair<string, string> entry in faqs)
+                    {
+                        keys += entry.Key + " ";
+                    }
+                }
+
+                await ReplyAsync("```Usage: !faq <key>\nAvailable keys are:\n" + keys);
+                return;
+            }
+            if (faqs.ContainsKey(key))
+            {
+                await ReplyAsync(faqs[key]);
+            } else
+            {
+                await ReplyAsync("Invalid FAQ key.\nnAvailable keys are:\n" + keys);
+            }
         }
     }
 }
