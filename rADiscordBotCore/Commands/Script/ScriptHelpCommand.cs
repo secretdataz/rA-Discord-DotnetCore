@@ -66,16 +66,18 @@ namespace rADiscordBotCore.Commands.Script
             ScriptCommand cmd = scriptCommands.FirstOrDefault(x => x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
             if (cmd == null)
             {
-                await ReplyAsync("Command not found.");
+                await ReplyAsync("Command not found. Do you meant any of these: " + String.Join(" ", scriptCommands.Where(x => x.Name.Contains(name)).Select(y => y.Name)));
             }
             else
             {
-                string desc = "```";
-                foreach (string x in cmd.Descriptions)
-                {
-                    desc += x + Environment.NewLine;
-                }
-                await ReplyAsync(desc + "```");
+                EmbedBuilder builder = new EmbedBuilder();
+                builder.WithTitle("Script Command - " + cmd.Name);
+                builder.AddInlineField(cmd.Descriptions.FirstOrDefault(), String.Join(Environment.NewLine, cmd.Descriptions.Skip(1)));
+                builder.WithThumbnailUrl("https://dac.cssnr.com/static/images/logo.png");
+                builder.Url = string.Format("https://github.com/rathena/rathena/blob/master/doc/script_commands.txt#L{0}-L{1}", cmd.LineNumberStart, cmd.LineNumberEnd);
+                builder.WithColor(Color.LightGrey);
+
+                await ReplyAsync(string.Empty, false, builder, RequestOptions.Default);
             }
         }
     }

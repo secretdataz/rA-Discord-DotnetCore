@@ -29,8 +29,10 @@ namespace rADiscordBotCore.Commands.Script
             bool skip = false;
             ScriptCommand sc = null;
             int nullCount = 0;
+            int lineNumber = 0;
             foreach(string line in content)
             {
+                lineNumber++;
                 if (!enableParse)
                 {
                     if (line.StartsWith("1.- Basic commands."))
@@ -40,7 +42,10 @@ namespace rADiscordBotCore.Commands.Script
                     if (line.Equals("---------------------------------------"))
                     {
                         if (sc != null && !String.IsNullOrEmpty(sc.Name))
+                        {
+                            sc.LineNumberEnd = lineNumber;
                             commands.Add(sc);
+                        }
                         sc = new ScriptCommand();
                         nullCount = 0;
                         skip = false;
@@ -64,7 +69,10 @@ namespace rADiscordBotCore.Commands.Script
                                 Match match = rgx.Match(line);
                                 Group g = match.Groups[1];
                                 if (g.Success)
+                                {
                                     sc.Name = g.Value;
+                                    sc.LineNumberStart = lineNumber;
+                                }
                             }
                         }
                     }

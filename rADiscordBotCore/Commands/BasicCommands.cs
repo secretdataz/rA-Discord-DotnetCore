@@ -12,27 +12,53 @@ namespace rADiscordBotCore.Commands
         [Command("stats"), Summary("Display server stats")]
         public async Task Stats()
         {
-            using (Context.Channel.EnterTypingState()) {
+            using (Context.Channel.EnterTypingState())
+            {
                 var users = await Context.Guild.GetUsersAsync();
-                string msg = "**rAthena Discord Stat**:" + System.Environment.NewLine
-                                    + "```"
-                                    + "Region - " + Context.Guild.VoiceRegionId + System.Environment.NewLine
-                                    + System.Environment.NewLine
-                                    + "Total Users - " + users.Where(x => x.IsBot == false).Count() + System.Environment.NewLine
-                                    + System.Environment.NewLine
-                                    + "Total Bots - " + users.Where(x => x.IsBot == true).Count() + System.Environment.NewLine
-                                    + "Total Online Bots - " + users.Where(x => x.IsBot == true && x.Status != UserStatus.Offline).Count() + System.Environment.NewLine
-                                    + "Total Offline Bots - " + users.Where(x => x.IsBot == true && x.Status == UserStatus.Offline).Count() + System.Environment.NewLine
-                                    + "```";
-                await ReplyAsync(msg);
+
+                EmbedBuilder builder = new EmbedBuilder();
+                builder.WithTitle("rAthena Discord Stats");
+                builder.AddInlineField("Discord Name", Context.Guild.Name);
+                builder.AddInlineField("Region", Context.Guild.VoiceRegionId);
+                builder.AddInlineField("Verification Level", Context.Guild.VerificationLevel);
+                builder.AddInlineField("Established Since", Context.Guild.CreatedAt.ToString("dd-MMM-yyyy"));
+                builder.AddInlineField("Bot Status", string.Format("{0} Online / {1} Offline",
+                    users.Where(x => x.IsBot == true && x.Status == UserStatus.Online).Count(),
+                    users.Where(x => x.IsBot == true && x.Status == UserStatus.Offline).Count()));
+                builder.AddInlineField("Webhook Status", string.Format("{0} Online / {1} Offline", 
+                    users.Where(x => x.IsWebhook == true && x.Status == UserStatus.Online).Count(), 
+                    users.Where(x => x.IsWebhook == true && x.Status == UserStatus.Offline).Count()));
+                builder.AddInlineField("User Status", string.Format("{0} Online / {1} Offline / {2} Idle / {3} AFK / {4} DoNotDisturb / {5} Invisible",
+                    users.Where(x => x.IsBot == false && x.IsWebhook == false && x.Status == UserStatus.Online).Count(),
+                    users.Where(x => x.IsBot == false && x.IsWebhook == false && x.Status == UserStatus.Offline).Count(),
+                    users.Where(x => x.IsBot == false && x.IsWebhook == false && x.Status == UserStatus.Idle).Count(),
+                    users.Where(x => x.IsBot == false && x.IsWebhook == false && x.Status == UserStatus.AFK).Count(),
+                    users.Where(x => x.IsBot == false && x.IsWebhook == false && x.Status == UserStatus.DoNotDisturb).Count(),
+                    users.Where(x => x.IsBot == false && x.IsWebhook == false && x.Status == UserStatus.Invisible).Count()));
+                builder.WithThumbnailUrl("https://dac.cssnr.com/static/images/logo.png");
+                builder.Url = "http://rathena.org";
+                builder.WithColor(Color.Green);
+
+                await ReplyAsync(string.Empty, false, builder, RequestOptions.Default);
             }
         }
-
+        
         [Command("search"), Summary("This command will search for contents at rAthena forum. ```Usage: !search <content>```")]
         [Alias("find")]
         public async Task Search([Remainder, Summary("Text to search")] string query)
         {
-            await ReplyAsync("https://rathena.org/board/search/?&q=" + query.Replace(" ", "%20"));
+            using (Context.Channel.EnterTypingState())
+            {
+                EmbedBuilder builder = new EmbedBuilder();
+                builder.WithAuthor("rAthena Forum - Search Engine", "https://i.imgur.com/sRTCmlX.jpg", "https://rathena.org/board/search/?&q=" + query.Replace(" ", "%20"));
+                builder.WithTitle("Query: " + query);
+                builder.AddInlineField("Description", "The information may be a mix of various answer for similar questions.");
+                builder.WithThumbnailUrl("https://i.imgur.com/sRTCmlX.jpg"); // rAthenaLogo
+                builder.Url = "https://rathena.org/board/search/?&q=" + query.Replace(" ", "%20");
+                builder.WithColor(Color.LightOrange);
+
+                await ReplyAsync(string.Empty, false, builder, RequestOptions.Default);
+            }
         }
 
         [Command("purge"), Summary("This command will remove some Chat Log. ```Usage: !purge <amount> <@mention>```")]
@@ -45,7 +71,14 @@ namespace rADiscordBotCore.Commands
                 using (Context.Channel.EnterTypingState()) {
                     var msgs = (await Context.Channel.GetMessagesAsync(Context.Message, Direction.Before, amount).Flatten()).Where(msg => user == null || msg.Author.Id == user.Id);
                     await Context.Channel.DeleteMessagesAsync(msgs);
-                    await ReplyAsync("Done purging " + msgs.Count() + " messages");
+                    
+                    EmbedBuilder builder = new EmbedBuilder();
+                    builder.WithAuthor(Context.User.Username, Context.User.GetAvatarUrl(), "http://rathena.org");
+                    builder.WithTitle("Purged " + msgs.Count() + " message(s)" + (user == null ? "" : " posted by " + user.Username.ToString()) + ".");
+                    builder.WithThumbnailUrl("https://i.imgur.com/eTFbzF1.png"); // Delete Icon
+                    builder.WithColor(Color.Red);
+
+                    await ReplyAsync(string.Empty, false, builder, RequestOptions.Default);
                 }
             } else
             {
@@ -57,18 +90,22 @@ namespace rADiscordBotCore.Commands
         [Alias("who", "profile", "check")]
         public async Task WhoIs(IUser user)
         {
-            string msg = "**This command is WIP because the new API is...**"
-                                        + "```"
-                                        + "Name: " + user.Username + " (" + user.ToString() + ")" + System.Environment.NewLine
-                                        //+ "Role: " + String.Join(",", user.Roles.Select(x => x.Name)) + System.Environment.NewLine
-                                        + "Joined Since: " + user.CreatedAt + System.Environment.NewLine
-                                        //+ "Last Activity: " + user.LastActivityAt + System.Environment.NewLine
-                                        //+ "Last Online At: " + user.LastOnlineAt + System.Environment.NewLine
-                                        //+ "Status: " + user.Status + System.Environment.NewLine
-                                        + "```";
-            await ReplyAsync(msg);
-        }
+            using (Context.Channel.EnterTypingState())
+            {
+                EmbedBuilder builder = new EmbedBuilder();
+                builder.WithTitle("Basic User Profile");
+                builder.AddInlineField("Discord ID", user.ToString());
+                builder.AddInlineField("Discord Name", user.Username.ToString());
+                builder.AddInlineField("Playing Game", (user.Game.HasValue ? user.Game.ToString() : "None"));
+                builder.AddInlineField("Joined Since", user.CreatedAt.ToString("dd-MMM-yyyy"));
+                builder.AddInlineField("Status", user.Status.ToString());
+                builder.WithThumbnailUrl(user.GetAvatarUrl());
+                builder.WithColor(Color.Gold);
 
+                await ReplyAsync(string.Empty, false, builder, RequestOptions.Default);
+            }
+        }
+        
         Dictionary<string, string> faqs = new Dictionary<string, string>
         {
             { "install", "*Installation guide*:\nhttps://github.com/rathena/rathena/wiki/installations" },
@@ -86,6 +123,7 @@ namespace rADiscordBotCore.Commands
             { "3ps", "*Third-party Services* paid service listing:\nhttps://rathena.org/thirdpartyservices/" },
             { "docsfolder", "*rAthena's docs folder* aka the rAthena Bible:\nhttps://github.com/rathena/rathena/tree/master/doc" }
         };
+
         string keys = "";
         [Command("faq"), Summary("This command will display the FAQ. ```Usage: !faq {<key>}```")]
         public async Task FAQ([Summary("The FAQ to be displayed")]string key = null)
