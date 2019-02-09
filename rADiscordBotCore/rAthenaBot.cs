@@ -112,6 +112,7 @@ namespace rADiscordBotCore
                 await commands.AddModulesAsync(Assembly.GetEntryAssembly());
                 #endregion
 
+                await ScriptHelpCommand.RefreshScriptCommandsTxt();
                 if(!(await ScriptHelpCommand.ProcessScriptCommands()))
                 {
                     await Log(new LogMessage(LogSeverity.Warning, "rAthenaBot", "Script command process failed. Script command help will not be available!"));
