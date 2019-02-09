@@ -134,6 +134,8 @@ namespace rADiscordBotCore.Commands.Script
                 {
                     await wc.DownloadFileTaskAsync(scriptCmdTxtLocation, fileLocation);
                 }
+
+                LastRefresh = DateTime.Now;
                 return true;
             }
 
