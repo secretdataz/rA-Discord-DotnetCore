@@ -89,9 +89,10 @@ namespace rADiscordBotCore.Commands.Script
         {
             using (WebClient wc = new WebClient())
             {
-                string json = await wc.DownloadStringTaskAsync("https://api.github.com/repos/rathena/rathena/commits?path=doc/script_commands.txt");
-                //
-                Regex rgx = new Regex("sha\": \"(\\w+)\",");
+                wc.Headers.Add("User-Agent", "C# rAthenaBot");
+                string json = await wc.DownloadStringTaskAsync(updateCheckUrl);
+
+                Regex rgx = new Regex("\"sha\":\"(\\w+)\"");
                 Match match = rgx.Match(json);
                 if (match.Groups.Count > 1)
                 {
