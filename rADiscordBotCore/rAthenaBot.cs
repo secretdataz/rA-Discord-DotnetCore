@@ -14,12 +14,12 @@ using System.Threading.Tasks;
 
 namespace rADiscordBotCore
 {
-    partial class rAthenaBot
+    public partial class rAthenaBot
     {
         public static rAthenaBot instance { get; private set; }
         public Configuration Config { get; private set; }
         DiscordSocketClient discord;
-        CommandService commands;
+        public CommandService commands;
         RSSConfiguration RSSConfig;
         public static DivinePrideService DpService;
         Dictionary<String, SocketTextChannel> Channels = new Dictionary<string, SocketTextChannel>();

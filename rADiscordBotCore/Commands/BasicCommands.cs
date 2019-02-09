@@ -7,6 +7,8 @@ using System.Collections.Generic;
 
 namespace rADiscordBotCore.Commands
 {
+    [Name("Miscellaneous commands")]
+    [Summary("Commands that does not belong to any of the other categories")]
     public class BasicCommands : ModuleBase
     {
         [Command("stats"), Summary("Display server stats")]
@@ -43,7 +45,7 @@ namespace rADiscordBotCore.Commands
             }
         }
         
-        [Command("search"), Summary("This command will search for contents at rAthena forum. ```Usage: !search <content>```")]
+        [Command("search"), Summary("This command will search for contents at rAthena forum.")]
         [Alias("find")]
         public async Task Search([Remainder, Summary("Text to search")] string query)
         {
@@ -61,7 +63,7 @@ namespace rADiscordBotCore.Commands
             }
         }
 
-        [Command("purge"), Summary("This command will remove some Chat Log. ```Usage: !purge <amount> <@mention>```")]
+        [Command("purge"), Summary("This command will remove some Chat Log.")]
         [Alias("remove", "clean", "delete")]
         [RequireUserPermission(GuildPermission.ManageMessages)]
         public async Task Purge([Summary("Amount of messages to traverse back")] int amount, [Summary("The optional user to purge message")] IUser user = null)

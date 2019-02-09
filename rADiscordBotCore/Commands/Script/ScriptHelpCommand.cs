@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace rADiscordBotCore.Commands.Script
 {
+    [Name("rAthena script help commands")]
     public class ScriptHelpCommand : ModuleBase
     {
         private const string fileLocation = "resources/script_commands.txt";

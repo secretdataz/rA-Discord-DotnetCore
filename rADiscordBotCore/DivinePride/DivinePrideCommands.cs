@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace rADiscordBotCore.DivinePride
 {
+    [Name("Divine-Pride.org data display commands")]
     public class DivinePrideCommands : ModuleBase
     {
-        [Command("mobinfo"), Summary("This command will return information of a monster. ```Usage: !mobinfo <MonsterID>```")]
+        [Command("mobinfo"), Summary("This command will return information of a monster.")]
         [Alias("mi", "mobdb", "mobinfo")]
         public async Task MobInfo([Summary("Monster ID")]int mobid)
         {
@@ -51,7 +52,7 @@ namespace rADiscordBotCore.DivinePride
             }
         }
 
-        [Command("iteminfo"), Summary("This command will return information of an item. ```Usage: !iteminfo <ItemID>```")]
+        [Command("iteminfo"), Summary("This command will return information of an item.")]
         [Alias("ii", "itemdb", "iteminfo")]
         public async Task ItemInfo([Summary("Item ID")]int itemid)
         {
