@@ -127,7 +127,7 @@ namespace rADiscordBotCore.Commands
         };
 
         string keys = "";
-        [Command("faq"), Summary("This command will display the FAQ. ```Usage: !faq {<key>}```")]
+        [Command("faq"), Summary("This command will display the FAQ.")]
         public async Task FAQ([Summary("The FAQ to be displayed")]string key = null)
         {
             if(key == null)
