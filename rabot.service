@@ -1,0 +1,15 @@
+[Unit]
+Description=rAthena Discord bot
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=secret
+WorkingDirectory=/home/secret/rA-Discord-DotnetCore/bin/
+ExecStart=/usr/bin/env dotnet /home/secret/rA-Discord-DotnetCore/bin/rADiscordBotCore.dll
+
+
+[Install]
+WantedBy=multi-user.target
