@@ -30,13 +30,12 @@ namespace rADiscordBotCore.Commands
                 builder.AddInlineField("Webhook Status", string.Format("{0} Online / {1} Offline", 
                     users.Where(x => x.IsWebhook == true && x.Status == UserStatus.Online).Count(), 
                     users.Where(x => x.IsWebhook == true && x.Status == UserStatus.Offline).Count()));
-                builder.AddInlineField("User Status", string.Format("{0} Online / {1} Offline / {2} Idle / {3} AFK / {4} DoNotDisturb / {5} Invisible",
+                builder.AddInlineField("User Status", string.Format("{0} Online / {1} Offline / {2} Idle / {3} AFK / {4} DoNotDisturb",
                     users.Where(x => x.IsBot == false && x.IsWebhook == false && x.Status == UserStatus.Online).Count(),
                     users.Where(x => x.IsBot == false && x.IsWebhook == false && x.Status == UserStatus.Offline).Count(),
                     users.Where(x => x.IsBot == false && x.IsWebhook == false && x.Status == UserStatus.Idle).Count(),
                     users.Where(x => x.IsBot == false && x.IsWebhook == false && x.Status == UserStatus.AFK).Count(),
-                    users.Where(x => x.IsBot == false && x.IsWebhook == false && x.Status == UserStatus.DoNotDisturb).Count(),
-                    users.Where(x => x.IsBot == false && x.IsWebhook == false && x.Status == UserStatus.Invisible).Count()));
+                    users.Where(x => x.IsBot == false && x.IsWebhook == false && x.Status == UserStatus.DoNotDisturb).Count()));
                 builder.WithThumbnailUrl("https://dac.cssnr.com/static/images/logo.png");
                 builder.Url = "http://rathena.org";
                 builder.WithColor(Color.Green);
