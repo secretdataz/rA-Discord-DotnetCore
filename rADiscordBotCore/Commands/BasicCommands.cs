@@ -14,6 +14,8 @@ namespace rADiscordBotCore.Commands
         [Command("stats"), Summary("Display server stats")]
         public async Task Stats()
         {
+            if (!rAthenaBot.instance.IsChannelWhitelisted(Context.Channel))
+                return;
             using (Context.Channel.EnterTypingState())
             {
                 var users = await Context.Guild.GetUsersAsync();
@@ -48,6 +50,8 @@ namespace rADiscordBotCore.Commands
         [Alias("find")]
         public async Task Search([Remainder, Summary("Text to search")] string query)
         {
+            if (!rAthenaBot.instance.IsChannelWhitelisted(Context.Channel))
+                return;
             using (Context.Channel.EnterTypingState())
             {
                 EmbedBuilder builder = new EmbedBuilder();
@@ -67,6 +71,8 @@ namespace rADiscordBotCore.Commands
         [RequireUserPermission(GuildPermission.ManageMessages)]
         public async Task Purge([Summary("Amount of messages to traverse back")] int amount, [Summary("The optional user to purge message")] IUser user = null)
         {
+            if (!rAthenaBot.instance.IsChannelWhitelisted(Context.Channel))
+                return;
             if (amount > 0)
             {
                 using (Context.Channel.EnterTypingState()) {
@@ -91,6 +97,8 @@ namespace rADiscordBotCore.Commands
         [Alias("who", "profile", "check")]
         public async Task WhoIs(IUser user)
         {
+            if (!rAthenaBot.instance.IsChannelWhitelisted(Context.Channel))
+                return;
             using (Context.Channel.EnterTypingState())
             {
                 EmbedBuilder builder = new EmbedBuilder();
@@ -129,7 +137,9 @@ namespace rADiscordBotCore.Commands
         [Command("faq"), Summary("This command will display the FAQ.")]
         public async Task FAQ([Summary("The FAQ to be displayed")]string key = null)
         {
-            if(key == null)
+            if (!rAthenaBot.instance.IsChannelWhitelisted(Context.Channel))
+                return;
+            if (key == null)
             {
                 if(string.IsNullOrEmpty(keys))
                 {

@@ -129,7 +129,7 @@ namespace rADiscordBotCore
                 instance = this;
                 await discord.LoginAsync(TokenType.Bot, Config.DiscordToken);
                 await discord.StartAsync();
-                await discord.SetGameAsync("!help", "https://www.rAthena.org", StreamType.NotStreaming);
+                await discord.SetGameAsync(Config.PrefixChar + "help", "https://www.rAthena.org", StreamType.NotStreaming);
                 await discord.SetStatusAsync(UserStatus.Online);
 
                 await Task.Delay(-1);
@@ -290,6 +290,11 @@ namespace rADiscordBotCore
                 if (!result.IsSuccess)
                     await context.Channel.SendMessageAsync(result.ErrorReason);
             }
+        }
+
+        public bool IsChannelWhitelisted(IChannel channel)
+        {
+            return !Config.UseChannelWhitelist || Config.WhitelistedChannelIds.Contains(channel.Id);
         }
     }
 }

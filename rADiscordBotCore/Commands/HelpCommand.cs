@@ -23,6 +23,9 @@ namespace rADiscordBotCore.Commands
         [Summary("Display help message")]
         public async Task HelpAsync(string command = null)
         {
+            if (!rAthenaBot.instance.IsChannelWhitelisted(Context.Channel))
+                return;
+
             if (command != null)
             {
                 var result = commandService.Search(Context, command);

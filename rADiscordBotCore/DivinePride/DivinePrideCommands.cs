@@ -15,6 +15,8 @@ namespace rADiscordBotCore.DivinePride
         [Alias("mi", "mobdb", "mobinfo")]
         public async Task MobInfo([Summary("Monster ID")]int mobid)
         {
+            if (!rAthenaBot.instance.IsChannelWhitelisted(Context.Channel))
+                return;
             using (Context.Channel.EnterTypingState())
             {
                 Monster mob = rAthenaBot.DpService.GetMonster(mobid);
@@ -56,6 +58,8 @@ namespace rADiscordBotCore.DivinePride
         [Alias("ii", "itemdb", "iteminfo")]
         public async Task ItemInfo([Summary("Item ID")]int itemid)
         {
+            if (!rAthenaBot.instance.IsChannelWhitelisted(Context.Channel))
+                return;
             using (Context.Channel.EnterTypingState())
             {
                 Item item = rAthenaBot.DpService.GetItem(itemid);
@@ -116,6 +120,8 @@ namespace rADiscordBotCore.DivinePride
         [Command("ramob"), Summary("This command will return information of a monster in rAthena's mob_db.txt format.")]
         public async Task rAMob([Summary("Monster ID")]int mobid)
         {
+            if (!rAthenaBot.instance.IsChannelWhitelisted(Context.Channel))
+                return;
             using (Context.Channel.EnterTypingState())
             {
                 Monster mob = rAthenaBot.DpService.GetMonster(mobid);
@@ -133,6 +139,8 @@ namespace rADiscordBotCore.DivinePride
         [Command("raitem"), Summary("This command will return information of an item in rAthena's item_db.txt format.")]
         public async Task rAItem(int itemId)
         {
+            if (!rAthenaBot.instance.IsChannelWhitelisted(Context.Channel))
+                return;
             using (Context.Channel.EnterTypingState())
             {
                 Item item = rAthenaBot.DpService.GetItem(itemId);

@@ -11,6 +11,8 @@ namespace rADiscordBotCore
         public string PrefixChar { get; set; }
         public bool AllowMentionPrefix { get; set; }
         public Dictionary<String,String> Channels { get; set; }
+        public bool UseChannelWhitelist { get; set; }
+        public List<UInt64> WhitelistedChannelIds { get; set; }
         public string DivinePrideApiKey { get; set; }
         public string DivinePrideBaseUrl { get; set; }
     }

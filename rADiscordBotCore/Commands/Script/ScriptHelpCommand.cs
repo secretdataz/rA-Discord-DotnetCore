@@ -56,6 +56,8 @@ namespace rADiscordBotCore.Commands.Script
         [Command("script"), Summary("View rAthena script command documentation.")]
         public async Task Script([Summary("Script command name")] string name)
         {
+            if (!rAthenaBot.instance.IsChannelWhitelisted(Context.Channel))
+                return;
             if (!available)
             {
                 await ReplyAsync("This command is not available.");
