@@ -109,6 +109,7 @@ namespace rADiscordBotCore
                 #region Register Commands
                 commands = new CommandService();
                 discord.MessageReceived += HandleCommand;
+                discord.MessageReceived += HandleVoldemulator;
                 await commands.AddModulesAsync(Assembly.GetEntryAssembly());
                 #endregion
 
@@ -289,6 +290,21 @@ namespace rADiscordBotCore
                 var result = await commands.ExecuteAsync(context, argPos, services);
                 if (!result.IsSuccess)
                     await context.Channel.SendMessageAsync(result.ErrorReason);
+            }
+        }
+
+        public async Task HandleVoldemulator(SocketMessage messageParam)
+        {
+            // Don't process the command if it was a System Message
+            var message = messageParam as SocketUserMessage;
+            if (message == null || !(message.Channel is SocketGuildChannel)) return;
+
+            if(message.Content.ToLower().Contains("herc"))
+            {
+                SocketGuild guild = ((SocketGuildChannel)message.Channel).Guild;
+                IEmote voldethonk = guild.Emotes.FirstOrDefault(e => e.Name == "voldethonk");
+                if (voldethonk == null) return;
+                await message.AddReactionAsync(voldethonk);
             }
         }
 
