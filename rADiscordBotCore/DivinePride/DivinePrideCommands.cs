@@ -80,6 +80,7 @@ namespace rADiscordBotCore.DivinePride
 
                         EmbedBuilder builder = new EmbedBuilder();
                         builder.WithTitle("Item Info - " + item.name+" [" + item.slots.GetValueOrDefault() + "]");
+                        builder.WithDescription(itemDesc.ToString());
                         builder.AddInlineField("Item Type", Item.Idx2ItemType(item.itemTypeId.GetValueOrDefault()));
                         builder.AddInlineField("Item Sub-Type", item.itemSubTypeId.GetValueOrDefault());
                         builder.AddInlineField("MATK", item.matk.GetValueOrDefault());
@@ -97,7 +98,6 @@ namespace rADiscordBotCore.DivinePride
                         builder.AddInlineField("Refineable", item.refinable.GetValueOrDefault());
                         builder.AddInlineField("Indestructible", item.indestructible.GetValueOrDefault());
                         builder.AddInlineField("View ID", item.classNum.GetValueOrDefault());
-                        builder.AddInlineField("Description", itemDesc.ToString());
 
                         if (item.itemTypeId.GetValueOrDefault() == 6) // Card Type
                         {
