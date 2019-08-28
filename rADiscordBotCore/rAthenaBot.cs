@@ -271,26 +271,11 @@ namespace rADiscordBotCore
             // Create a Command Context
             var context = new CommandContext(discord, message);
 
-            var name = message.Content.Substring(1);
-            if (File.Exists("resources/img/" + name + ".gif"))
-            {
-                using (context.Channel.EnterTypingState())
-                {
-                    // Don't have to await [Secret]
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                    context.Channel.SendFileAsync("resources/img/" + name + ".gif");
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                    return;
-                }
-            }
-            else
-            {
-                // Execute the command. (result does not indicate a return value, 
-                // rather an object stating if the command executed successfully)
-                var result = await commands.ExecuteAsync(context, argPos, services);
-                if (!result.IsSuccess)
-                    await context.Channel.SendMessageAsync(result.ErrorReason);
-            }
+            // Execute the command. (result does not indicate a return value, 
+            // rather an object stating if the command executed successfully)
+            var result = await commands.ExecuteAsync(context, argPos, services);
+            if (!result.IsSuccess)
+                await context.Channel.SendMessageAsync(result.ErrorReason);
         }
 
         public async Task HandleVoldemulator(SocketMessage messageParam)
